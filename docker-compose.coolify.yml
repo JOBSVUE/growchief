@@ -7,27 +7,26 @@ services:
     container_name: growchief
     restart: always
     environment:
-      DATABASE_URL: "postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local"
-      STORAGE_PROVIDER: "local"
-      UPLOAD_DIRECTORY: "/uploads"
-      NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
-      AUTH_SECRET: "YourSpecialString!@#111"
-      FRONTEND_URL: "https://growchief.appx.jobsvue.com"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      EMAIL_PROVIDER: ${EMAIL_PROVIDER}
-      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
-      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS}
-      TEMPORAL_ADDRESS: "temporal:7233"
-      TEMPORAL_CONNECTION_TIMEOUT: "30000"
-      TEMPORAL_MAX_RETRY_ATTEMPTS: "5"
-      APOLLO_API_KEY: ""
-      DATAGMA_API_KEY: ""
+      - SERVICE_URL_GROWCHIEF_5000
+      - DATABASE_URL=postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local
+      - STORAGE_PROVIDER=local
+      - UPLOAD_DIRECTORY=/uploads
+      - NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
+      - 'AUTH_SECRET=${SERVICE_PASSWORD_GROWCHIEF_AUTH}'
+      - 'FRONTEND_URL=${SERVICE_URL_GROWCHIEF_5000}'
+      - 'GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}'
+      - 'GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}'
+      - 'EMAIL_PROVIDER=${EMAIL_PROVIDER}'
+      - 'EMAIL_FROM_NAME=${EMAIL_FROM_NAME}'
+      - 'EMAIL_FROM_ADDRESS=${EMAIL_FROM_ADDRESS}'
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CONNECTION_TIMEOUT=30000
+      - TEMPORAL_MAX_RETRY_ATTEMPTS=5
+      - 'APOLLO_API_KEY=${APOLLO_API_KEY}'
+      - 'DATAGMA_API_KEY=${DATAGMA_API_KEY}'
     volumes:
       - growchief-config-volume:/config/
       - growchief-uploads-volume:/uploads/
-    ports:
-      - "5002:5000"
     networks:
       - growchief-network
       - temporal-network
@@ -42,9 +41,9 @@ services:
     container_name: growchief-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: growchief-password
-      POSTGRES_USER: growchief-user
-      POSTGRES_DB: growchief-db-local
+      - POSTGRES_PASSWORD=growchief-password
+      - POSTGRES_USER=growchief-user
+      - POSTGRES_DB=growchief-db-local
     volumes:
       - growchief-postgres-volume:/var/lib/postgresql/data
     networks:
@@ -71,8 +70,6 @@ services:
       - xpack.security.enabled=false
     networks:
       - temporal-network
-    expose:
-      - 9200
     volumes:
       - temporal-elasticsearch-volume:/var/lib/elasticsearch/data
 
@@ -80,20 +77,16 @@ services:
     container_name: temporal-postgresql
     image: postgres:16
     environment:
-      POSTGRES_PASSWORD: temporal
-      POSTGRES_USER: temporal
+      - POSTGRES_PASSWORD=temporal
+      - POSTGRES_USER=temporal
     networks:
       - temporal-network
-    expose:
-      - 5432
     volumes:
       - temporal-postgresql-volume:/var/lib/postgresql/data
 
   temporal:
     container_name: temporal
     restart: always
-    ports:
-      - "7133:7233"
     image: temporalio/auto-setup:1.28.1
     depends_on:
       - temporal-postgresql
@@ -134,8 +127,6 @@ services:
       - TEMPORAL_CORS_ORIGINS=http://127.0.0.1:3000
     networks:
       - temporal-network
-    ports:
-      - "8085:8080"
 
 # -----------------------
 # Volumes
