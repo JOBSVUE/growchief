@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super({
+      datasourceUrl: process.env.DATABASE_URL,   // <-- REQUIRED FOR PRISMA 7
       log: [
         {
           emit: 'event',
@@ -13,6 +14,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       ],
     });
   }
+
   async onModuleInit() {
     await this.$connect();
   }
