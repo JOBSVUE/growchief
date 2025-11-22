@@ -3,7 +3,7 @@ services:
   # Growchief Application
   # -----------------------
   growchief:
-    image: ghcr.io/growchief/growchief:latest
+    image: ghcr.io/growchief/growchief:v0.2.0
     container_name: growchief
     restart: always
     environment:
