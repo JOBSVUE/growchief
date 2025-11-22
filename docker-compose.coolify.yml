@@ -7,12 +7,12 @@ services:
     container_name: growchief
     restart: always
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-      STORAGE_PROVIDER: ${STORAGE_PROVIDER}
+      DATABASE_URL: "postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local"
+      STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
-      AUTH_SECRET: ${AUTH_SECRET}
-      FRONTEND_URL: ${SERVICE_URL_GROWCHIEF}
+      AUTH_SECRET: "YourSpecialString!@#111"
+      FRONTEND_URL: "https://growchief.jobsvue.com"
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER}
@@ -42,9 +42,9 @@ services:
     container_name: growchief-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: growchief-password
+      POSTGRES_USER: growchief-user
+      POSTGRES_DB: growchief-db-local
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     networks:
@@ -93,7 +93,7 @@ services:
     container_name: temporal
     restart: always
     ports:
-      - "7933:7233"
+      - "7233:7233"
     image: temporalio/auto-setup:1.28.1
     depends_on:
       - temporal-postgresql
@@ -135,7 +135,7 @@ services:
     networks:
       - temporal-network
     ports:
-      - "8985:8080"
+      - "8085:8080"
 
 # -----------------------
 # Volumes
