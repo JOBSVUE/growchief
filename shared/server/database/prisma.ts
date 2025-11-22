@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super({
-      datasourceUrl: process.env.DATABASE_URL,   // <-- REQUIRED FOR PRISMA 7
+      datasourceUrl: process.env.DATABASE_URL,
       log: [
         {
           emit: 'event',
