@@ -24,8 +24,8 @@ services:
       APOLLO_API_KEY: ""
       DATAGMA_API_KEY: ""
     volumes:
-      - growchief-config:/config/
-      - growchief-uploads:/uploads/
+      - growchief-config-volume:/config/
+      - growchief-uploads-volume:/uploads/
     ports:
       - "5002:5000"
     networks:
@@ -46,7 +46,7 @@ services:
       POSTGRES_USER: growchief-user
       POSTGRES_DB: growchief-db-local
     volumes:
-      - postgres-volume:/var/lib/postgresql/data
+      - growchief-postgres-volume:/var/lib/postgresql/data
     networks:
       - growchief-network
     healthcheck:
@@ -74,7 +74,7 @@ services:
     expose:
       - 9200
     volumes:
-      - /var/lib/elasticsearch/data
+      - temporal-elasticsearch-volume:/var/lib/elasticsearch/data
 
   temporal-postgresql:
     container_name: temporal-postgresql
@@ -87,7 +87,7 @@ services:
     expose:
       - 5432
     volumes:
-      - /var/lib/postgresql/data
+      - temporal-postgresql-volume:/var/lib/postgresql/data
 
   temporal:
     container_name: temporal
@@ -141,12 +141,17 @@ services:
 # Volumes
 # -----------------------
 volumes:
-  postgres-volume:
+  growchief-postgres-volume:
     external: false
-  growchief-config:
+  growchief-config-volume:
     external: false
-  growchief-uploads:
+  growchief-uploads-volume:
     external: false
+  temporal-elasticsearch-volume:
+    external: false
+  temporal-postgresql-volume:
+    external: false
+    
 
 # -----------------------
 # Networks
