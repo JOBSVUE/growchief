@@ -38,7 +38,7 @@ services:
       growchief-postgres:
         condition: service_healthy
       temporal:
-        condition: service_started
+        condition: service_healthy
 
   growchief-postgres:
     image: postgres:16
@@ -117,6 +117,12 @@ services:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
     labels:
       kompose.volume.type: configMap
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/7233' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   temporal-admin-tools:
     container_name: temporal-admin-tools
