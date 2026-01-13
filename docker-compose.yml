@@ -9,7 +9,6 @@ services:
     container_name: growchief
     restart: always
     environment:
-      SERVICE_URL_GROWCHIEF_3000:
       DATABASE_URL: "postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local"
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
