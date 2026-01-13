@@ -15,7 +15,7 @@ services:
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
       AUTH_SECRET: ${AUTH_SECRET:-YourSpecialString!@#111v}
-      FRONTEND_URL: ${FRONTEND_URL:-https://sg0wgs48c8o0g8k8gw0wogcs.apps.jobsvue.com}
+      FRONTEND_URL: ${FRONTEND_URL:-https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
@@ -126,7 +126,7 @@ services:
     image: temporalio/ui:2.34.0
     environment:
       - TEMPORAL_ADDRESS=temporal-server:7233
-      - TEMPORAL_CORS_ORIGINS=https://sg0wgs48c8o0g8k8gw0wogcs.apps.jobsvue.com
+      - TEMPORAL_CORS_ORIGINS=https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com
     ports:
       - "8980:8080"
     depends_on:
