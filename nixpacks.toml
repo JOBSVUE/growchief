@@ -3,7 +3,7 @@ nixpkgsArchive = "d98abf5cf5914e5e4e9d57205e3af55ca90ffc1d"
 nixPkgs = ["nodejs_22", "pnpm-9_x", "openssl", "curl", "wget", "nginx"]
 
 [phases.start]
-cmd = "nginx && pnpm run pm2"
+cmds = ["nginx && pnpm run pm2"]
 
 [variables]
 NIXPACKS_NODE_VERSION = "22"
