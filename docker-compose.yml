@@ -140,7 +140,7 @@ services:
     networks:
       - temporal-network
     ports:
-      - "8380:8080"
+      - "8080:8080"
 
 # -----------------------
 # Volumes
