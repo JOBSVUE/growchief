@@ -168,7 +168,6 @@ volumes:
 # -----------------------
 networks:
   growchief-network:
-    external: true
+    driver: bridge
   temporal-network:
     driver: bridge
-    name: temporal-network
