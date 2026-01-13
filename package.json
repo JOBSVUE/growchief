@@ -20,7 +20,7 @@
     "prisma-generate": "pnpm dlx prisma generate --schema ./schema.prisma",
     "prisma-db-push": "pnpm dlx prisma db push --schema ./schema.prisma",
     "pm2": "pnpm run pm2-run",
-    "pm2-run": "pm2 delete all || true && pnpm run prisma-db-push && pnpm run --parallel pm2 && pm2 logs",
+    "pm2-run": "pm2 delete all || true && ([ -n \"$DATABASE_URL\" ] && pnpm run prisma-db-push || true) && pnpm run --parallel pm2 && pm2 logs",
     "postinstall": "pnpm run prisma-generate"
   },
   "keywords": [],
