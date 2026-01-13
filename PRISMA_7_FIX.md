@@ -12,12 +12,12 @@
 
 ### 3. `shared/server/database/prisma.ts` ✅ (Updated)
 - Updated `PrismaService` to use Prisma 7 adapter pattern
-- Now uses `PrismaPostgres` adapter with `pg` Pool
-- Imports: `@prisma/adapter-postgres` and `pg`
+- Now uses `PrismaPg` adapter with `pg` Pool
+- Imports: `@prisma/adapter-pg` and `pg`
 
 ### 4. `package.json` ✅ (Updated)
 - Upgraded `@prisma/client` from `^6.13.0` to `^7.2.0`
-- Added `@prisma/adapter-postgres`: `^7.2.0`
+- Added `@prisma/adapter-pg`: `^7.2.0` (correct package name)
 - Added `pg`: `^8.11.3`
 - Added `@types/pg`: `^8.10.9` (devDependency)
 
@@ -51,7 +51,7 @@
 - **Schema files**: No longer support `url` property in `datasource` blocks
 - **Migrations**: Connection URL moved to `prisma.config.ts`
 - **Client**: Must use adapters (e.g., `PrismaPostgres`) instead of connection strings
-- **Dependencies**: Requires `@prisma/adapter-postgres` and `pg` packages
+- **Dependencies**: Requires `@prisma/adapter-pg` and `pg` packages
 
 ## Verification
 
