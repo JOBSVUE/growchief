@@ -14,7 +14,7 @@ services:
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
-      AUTH_SECRET: "YourSpecialString!@#111"
+      AUTH_SECRET: ${AUTH_SECRET:-YourSpecialString!@#111v}
       FRONTEND_URL: ${SERVICE_URL_GROWCHIEF}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
