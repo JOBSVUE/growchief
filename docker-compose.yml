@@ -9,7 +9,7 @@ services:
     container_name: growchief
     restart: always
     environment:
-      SERVICE_URL_GROWCHIEF:
+      #SERVICE_URL_GROWCHIEF:
       DATABASE_URL: "postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local"
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
@@ -146,7 +146,7 @@ services:
     networks:
       - temporal-network
     ports:
-      - "8080:8080"
+      - "8280:8080"
 
 # -----------------------
 # Volumes
