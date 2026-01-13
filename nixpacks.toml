@@ -1,2 +1,5 @@
+[phases.setup]
+nixpkgsArchive = "default"
+
 [variables]
 NIXPACKS_NODE_VERSION = "22"
