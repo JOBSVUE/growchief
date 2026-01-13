@@ -38,7 +38,7 @@ services:
         condition: service_started
 
   growchief-postgres:
-    image: postgres:16
+    image: postgres:17
     container_name: growchief-postgres
     restart: always
     environment:
