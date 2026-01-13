@@ -8,7 +8,7 @@ export const getTemporalModule = (
   return TemporalModule.register({
     isGlobal: true,
     connection: {
-      address: process.env.TEMPORAL_ADDRESS || 'localhost:7233',
+      address: process.env.TEMPORAL_ADDRESS || 'temporal-server:7723',
       namespace: process.env.TEMPORAL_NAMESPACE || 'default',
     },
     taskQueue: 'main',
