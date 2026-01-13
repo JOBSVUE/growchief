@@ -9,13 +9,13 @@ services:
     container_name: growchief
     restart: always
     environment:
-      #SERVICE_URL_GROWCHIEF:
+      SERVICE_URL_GROWCHIEF_5002:
       DATABASE_URL: "postgresql://growchief-user:growchief-password@growchief-postgres:5432/growchief-db-local"
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
       AUTH_SECRET: ${AUTH_SECRET:-YourSpecialString!@#111v}
-      FRONTEND_URL: ${SERVICE_URL_GROWCHIEF}
+      FRONTEND_URL: ${SERVICE_URL_GROWCHIEF_5002}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
@@ -173,7 +173,7 @@ volumes:
 # -----------------------
 networks:
   growchief-network:
-    external: false
+    external: true
   temporal-network:
     driver: bridge
     name: temporal-network
