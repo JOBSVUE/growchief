@@ -9,7 +9,7 @@ cmds = [
 ]
 
 [phases.start]
-cmds = ["sh", "-c", "mkdir -p /var/log/nginx && nginx && pnpm run pm2"]
+cmds = ["mkdir -p /var/log/nginx && nginx && pnpm run pm2"]
 
 [variables]
 NIXPACKS_NODE_VERSION = "22"
