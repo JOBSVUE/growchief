@@ -26,6 +26,9 @@ services:
     volumes:
       - growchief-config:/config/
       - growchief-uploads:/uploads/
+    networks:
+      - growchief-network
+      - temporal-network
     ports:
       - "5002:5000"
     depends_on:
@@ -44,6 +47,8 @@ services:
       POSTGRES_DB: growchief-db-local
     volumes:
       - growchief-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - growchief-network
     healthcheck:
       test: pg_isready -U growchief-user -d growchief-db-local
       interval: 10s
@@ -66,6 +71,10 @@ services:
       - xpack.security.enabled=false
     volumes:
       - growchief-elastic:/var/lib/elasticsearch/data
+   networks:
+      - temporal-network
+    expose:
+      - 9200
 
   temporal-postgresql:
     container_name: temporal-postgresql
@@ -73,6 +82,10 @@ services:
     environment:
       POSTGRES_PASSWORD: temporal
       POSTGRES_USER: temporal
+   networks:
+      - temporal-network
+    expose:
+      - 5432
     volumes:
       - growchief-temporal:/var/lib/postgresql/data
 
@@ -83,6 +96,8 @@ services:
     depends_on:
       - temporal-postgresql
       - temporal-elasticsearch
+    ports:
+      - "7233:7233"
     environment:
       - DB=postgres12
       - DB_PORT=5432
@@ -93,6 +108,8 @@ services:
       - ES_SEEDS=temporal-elasticsearch
       - ES_VERSION=v7
       - TEMPORAL_NAMESPACE=default
+   networks:
+      - temporal-network
     labels:
       kompose.volume.type: configMap
 
@@ -103,6 +120,8 @@ services:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CLI_ADDRESS=temporal:7233
     stdin_open: true
+    networks:
+      - temporal-network
     depends_on:
       - temporal
     tty: true
@@ -113,6 +132,8 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CORS_ORIGINS=http://127.0.0.1:3000
+   networks:
+      - temporal-network
     ports:
       - "8085:8080"
 
@@ -129,6 +150,14 @@ volumes:
   growchief-elastic:
     external: false
   growchief-temporal:
+    external: false
+# -----------------------
+# Networks
+# -----------------------
+networks:
+  growchief-network:
+    external: false
+  temporal-network:
     external: false
 
 
