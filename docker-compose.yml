@@ -27,8 +27,6 @@ services:
     depends_on:
       growchief-postgres:
         condition: service_healthy
-      temporal:
-        condition: service_healthy
 
   growchief-postgres:
     image: postgres:16
