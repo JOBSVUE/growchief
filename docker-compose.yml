@@ -11,7 +11,7 @@ services:
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
       AUTH_SECRET: "YourSpecialString!@#111"
-      FRONTEND_URL: "https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com"
+      FRONTEND_URL: "https://zg00wko4cs0kck00o0gcc08w.apps.jobsvue.com"
       GOOGLE_CLIENT_ID: "For Login With Google Client ID"
       GOOGLE_CLIENT_SECRET: "For Login With Google Client Secret"
       TEMPORAL_ADDRESS: "temporal:7233"
