@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim
+FROM node:20.19-bookworm-slim
 
 ARG VITE_PUBLIC_VERSION
 ENV VITE_PUBLIC_VERSION=${VITE_PUBLIC_VERSION}
