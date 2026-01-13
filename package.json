@@ -40,7 +40,7 @@
     "@nestjs/schedule": "^6.0.0",
     "@nestjs/websockets": "^11.1.6",
     "@prisma/client": "^7.2.0",
-    "@prisma/adapter-postgres": "^7.2.0",
+    "@prisma/adapter-pg": "^7.2.0",
     "pg": "^8.11.3",
     "@tailwindcss/vite": "^4.1.11",
     "@temporalio/activity": "^1.12.2",
