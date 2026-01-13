@@ -31,6 +31,9 @@ services:
       - growchief-uploads:/uploads/
     ports:
       - "5002:5000"
+    networks:
+      - growchief-network
+      - temporal-network
     depends_on:
       growchief-postgres:
         condition: service_healthy
@@ -49,6 +52,8 @@ services:
       - postgres-volume:/var/lib/postgresql/data
     ports:
       - "5437:5432"
+    networks:
+      - growchief-network
     healthcheck:
       test: pg_isready -U growchief-user -d growchief-db-local
       interval: 10s
@@ -69,6 +74,8 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - xpack.security.enabled=false
+    networks:
+      - temporal-network
     ports:
       - "9002:9200"
     volumes:
@@ -80,6 +87,8 @@ services:
     environment:
       POSTGRES_PASSWORD: temporal
       POSTGRES_USER: temporal
+    networks:
+      - temporal-network
     ports:
       - "5438:5432"
     volumes:
@@ -104,6 +113,8 @@ services:
       - ES_SEEDS=temporal-elasticsearch
       - ES_VERSION=v7
       - TEMPORAL_NAMESPACE=default
+    networks:
+      - temporal-network
     volumes:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
     labels:
@@ -116,6 +127,8 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal-server:7233
       - TEMPORAL_CLI_ADDRESS=temporal-server:7233
+    networks:
+      - temporal-network
     stdin_open: true
     depends_on:
       - temporal-server
@@ -127,6 +140,8 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal-server:7233
       - TEMPORAL_CORS_ORIGINS=https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com
+    networks:
+      - temporal-network
     ports:
       - "8980:8080"
     depends_on:
@@ -150,4 +165,12 @@ volumes:
   growchief-uploads:
     external: false
 
+# -----------------------
+# Networks
+# -----------------------
+networks:
+  growchief-network:
+    external: false
+  temporal-network:
+    external: false
 
