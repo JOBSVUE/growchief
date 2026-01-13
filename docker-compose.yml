@@ -10,18 +10,12 @@ services:
       STORAGE_PROVIDER: "local"
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
-      AUTH_SECRET: ${AUTH_SECRET:-YourSpecialString!@#111v}
-      FRONTEND_URL: "https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      EMAIL_PROVIDER: ${EMAIL_PROVIDER}
-      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
-      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS}
-      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal:7233}
-      TEMPORAL_CONNECTION_TIMEOUT: "30000"
-      TEMPORAL_MAX_RETRY_ATTEMPTS: "5"
-      APOLLO_API_KEY: ${APOLLO_API_KEY:-}
-      DATAGMA_API_KEY: ${DATAGMA_API_KEY:-}
+      AUTH_SECRET: "YourSpecialString!@#111"
+      GOOGLE_CLIENT_ID: "For Login With Google Client ID"
+      GOOGLE_CLIENT_SECRET: "For Login With Google Client Secret"
+      TEMPORAL_ADDRESS: "temporal:7233"
+      APOLLO_API_KEY: ""
+      DATAGMA_API_KEY: ""
     volumes:
       - growchief-config:/config/
       - growchief-uploads:/uploads/
