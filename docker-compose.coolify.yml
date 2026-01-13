@@ -26,11 +26,11 @@ services:
     volumes:
       - growchief-config:/config/
       - growchief-uploads:/uploads/
+    ports:
+      - "5002:5000"
     networks:
       - growchief-network
       - temporal-network
-    ports:
-      - "5002:5000"
     depends_on:
       growchief-postgres:
         condition: service_healthy
@@ -38,7 +38,7 @@ services:
         condition: service_started
 
   growchief-postgres:
-    image: postgres:17
+    image: postgres:16
     container_name: growchief-postgres
     restart: always
     environment:
@@ -46,7 +46,7 @@ services:
       POSTGRES_USER: growchief-user
       POSTGRES_DB: growchief-db-local
     volumes:
-      - growchief-postgres-volume:/var/lib/postgresql/data
+      - postgres-volume:/var/lib/postgresql/data
     networks:
       - growchief-network
     healthcheck:
@@ -69,35 +69,35 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - xpack.security.enabled=false
-    volumes:
-      - growchief-elastic:/var/lib/elasticsearch/data
-   networks:
+    networks:
       - temporal-network
     expose:
       - 9200
+    volumes:
+      - /var/lib/elasticsearch/data
 
   temporal-postgresql:
     container_name: temporal-postgresql
-    image: postgres:17
+    image: postgres:16
     environment:
       POSTGRES_PASSWORD: temporal
       POSTGRES_USER: temporal
-   networks:
+    networks:
       - temporal-network
     expose:
       - 5432
     volumes:
-      - growchief-temporal:/var/lib/postgresql/data
+      - /var/lib/postgresql/data
 
   temporal:
     container_name: temporal
     restart: always
+    ports:
+      - "7233:7233"
     image: temporalio/auto-setup:1.28.1
     depends_on:
       - temporal-postgresql
       - temporal-elasticsearch
-    ports:
-      - "7233:7233"
     environment:
       - DB=postgres12
       - DB_PORT=5432
@@ -108,7 +108,7 @@ services:
       - ES_SEEDS=temporal-elasticsearch
       - ES_VERSION=v7
       - TEMPORAL_NAMESPACE=default
-   networks:
+    networks:
       - temporal-network
     labels:
       kompose.volume.type: configMap
@@ -119,9 +119,9 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CLI_ADDRESS=temporal:7233
-    stdin_open: true
     networks:
       - temporal-network
+    stdin_open: true
     depends_on:
       - temporal
     tty: true
@@ -132,7 +132,7 @@ services:
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CORS_ORIGINS=http://127.0.0.1:3000
-   networks:
+    networks:
       - temporal-network
     ports:
       - "8085:8080"
@@ -141,16 +141,13 @@ services:
 # Volumes
 # -----------------------
 volumes:
-  growchief-postgres-volume:
+  postgres-volume:
     external: false
   growchief-config:
     external: false
   growchief-uploads:
     external: false
-  growchief-elastic:
-    external: false
-  growchief-temporal:
-    external: false
+
 # -----------------------
 # Networks
 # -----------------------
@@ -159,5 +156,3 @@ networks:
     external: false
   temporal-network:
     external: false
-
-
