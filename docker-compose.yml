@@ -168,4 +168,5 @@ networks:
   growchief-network:
     external: false
   temporal-network:
-    external: false
+    driver: bridge
+    name: temporal-network
