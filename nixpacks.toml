@@ -3,7 +3,7 @@ nixpkgsArchive = "d98abf5cf5914e5e4e9d57205e3af55ca90ffc1d"
 nixPkgs = ["nodejs_22", "pnpm-9_x", "openssl", "curl", "wget"]
 
 [phases.start]
-cmds = ["pnpm exec pm2 delete all || true && pnpm run prisma-db-push && pnpm run --parallel pm2 && pnpm exec pm2 logs"]
+cmds = ["pnpm run pm2-run"]
 
 [variables]
 NIXPACKS_NODE_VERSION = "22"
