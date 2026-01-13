@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -238,7 +237,7 @@ model Leads {
   organization      LeadsOrganization[]
   activities        Activity[]
   createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  updatedAt          DateTime            @updatedAt
 
   @@unique([platform, url])
   @@index([createdAt])
