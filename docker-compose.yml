@@ -21,7 +21,7 @@ services:
       EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
       EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-support@jobsvue.com}  
-      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal-server:7233}
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal:7233}
       TEMPORAL_CONNECTION_TIMEOUT: "30000"
       TEMPORAL_MAX_RETRY_ATTEMPTS: "5"
       APOLLO_API_KEY: ${APOLLO_API_KEY:-}
@@ -37,7 +37,7 @@ services:
     depends_on:
       growchief-postgres:
         condition: service_healthy
-      temporal-server:
+      temporal:
         condition: service_started
 
   growchief-postgres:
@@ -94,8 +94,9 @@ services:
     volumes:
       - /var/lib/postgresql/data
 
-  temporal-server:
-    container_name: temporal-server
+  temporal:
+    container_name: temporal
+    restart: always
     ports:
       - "7723:7233"
     image: temporalio/auto-setup:1.28.1
@@ -125,27 +126,27 @@ services:
     container_name: temporal-admin-tools
     image: temporalio/admin-tools:1.28.1-tctl-1.18.4-cli-1.4.1
     environment:
-      - TEMPORAL_ADDRESS=temporal-server:7233
-      - TEMPORAL_CLI_ADDRESS=temporal-server:7233
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
     networks:
       - temporal-network
     stdin_open: true
     depends_on:
-      - temporal-server
+      - temporal
     tty: true
 
   temporal-ui:
     container_name: temporal-ui
     image: temporalio/ui:2.34.0
     environment:
-      - TEMPORAL_ADDRESS=temporal-server:7233
+      - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CORS_ORIGINS=https://aggok0c8og8c4gwckgs8swok.apps.jobsvue.com
     networks:
       - temporal-network
     ports:
       - "8980:8080"
     depends_on:
-      temporal-server:
+      temporal:
         condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080 || exit 1"]
