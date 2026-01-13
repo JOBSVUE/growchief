@@ -12,7 +12,7 @@ services:
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
       AUTH_SECRET: "YourSpecialString!@#111"
-      FRONTEND_URL: "https://sg0wgs48c8o0g8k8gw0wogcs.apps.jobsvue.com"
+      FRONTEND_URL: "https://z8wsskkccsck0coc4o04oww0.apps.jobsvue.com"
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER}
