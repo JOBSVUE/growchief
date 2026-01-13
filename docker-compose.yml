@@ -16,13 +16,13 @@ services:
       UPLOAD_DIRECTORY: "/uploads"
       NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
       AUTH_SECRET: ${AUTH_SECRET:-YourSpecialString!@#111v}
-      FRONTEND_URL: ${FRONTEND_URL:-}
+      FRONTEND_URL: ${FRONTEND_URL:-https://sg0wgs48c8o0g8k8gw0wogcs.apps.jobsvue.com}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
       EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-}
-      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal:7233}
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal-server:7723}
       TEMPORAL_CONNECTION_TIMEOUT: "30000"
       TEMPORAL_MAX_RETRY_ATTEMPTS: "5"
       APOLLO_API_KEY: ${APOLLO_API_KEY:-}
@@ -35,7 +35,7 @@ services:
     depends_on:
       growchief-postgres:
         condition: service_healthy
-      temporal:
+      temporal-server:
         condition: service_started
 
   growchief-postgres:
@@ -48,6 +48,8 @@ services:
       POSTGRES_DB: growchief-db-local
     volumes:
       - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - "5437:5432"
     healthcheck:
       test: pg_isready -U growchief-user -d growchief-db-local
       interval: 10s
@@ -68,8 +70,8 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - xpack.security.enabled=false
-    expose:
-      - 9200
+    ports:
+      - "9002:9200"
     volumes:
       - /var/lib/elasticsearch/data
 
@@ -79,15 +81,15 @@ services:
     environment:
       POSTGRES_PASSWORD: temporal
       POSTGRES_USER: temporal
-    expose:
-      - 5432
+    ports:
+      - "5438:5432"
     volumes:
       - /var/lib/postgresql/data
 
-  temporal:
-    container_name: temporal
+  temporal-server:
+    container_name: temporal-server
     ports:
-      - "7233:7233"
+      - "7723:7233"
     image: temporalio/auto-setup:1.28.1
     depends_on:
       - temporal-postgresql
@@ -113,23 +115,23 @@ services:
     container_name: temporal-admin-tools
     image: temporalio/admin-tools:1.28.1-tctl-1.18.4-cli-1.4.1
     environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_CLI_ADDRESS=temporal:7233
+      - TEMPORAL_ADDRESS=temporal-server:7723
+      - TEMPORAL_CLI_ADDRESS=temporal-server:7723
     stdin_open: true
     depends_on:
-      - temporal
+      - temporal-server
     tty: true
 
   temporal-ui:
     container_name: temporal-ui
     image: temporalio/ui:2.34.0
     environment:
-      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_ADDRESS=temporal-server:7723
       - TEMPORAL_CORS_ORIGINS=http://127.0.0.1:3000
     ports:
       - "8980:8080"
     depends_on:
-      temporal:
+      temporal-server:
         condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080 || exit 1"]
